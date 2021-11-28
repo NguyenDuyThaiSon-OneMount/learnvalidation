@@ -275,9 +275,7 @@ Thực tế, các annotation được giới thiệu ở mục 3 có thể dùng
 
 ### 7. Tham khảo thêm
 
-Code các bạn có thể xem tại đây:
-
-
+[Code các bạn có thể xem tại đây:] (https://github.com/NguyenDuyThaiSon-OneMount/learnvalidation)
 
 Bài viết tham khảo các nguồn sau đây:
 
