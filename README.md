@@ -1,8 +1,8 @@
-## Xác thực request bằng Spring Boot Validation
+# Xác thực request bằng Spring Boot Validation
 
 Xác thực dữ liệu đầu vào (data validation) là một trong những yêu cầu cơ bản cho hầu hết các ứng dụng, đặc biệt là các ứng dụng web. Để hỗ trợ người dùng thì Spring Framework đặt ra các [chuẩn xác thực dữ liệu](https://beanvalidation.org/1.0/spec/) và cung cấp các công cụ để hỗ trợ lập trình viên trong tác vụ "tưởng như cơ bản nhưng chủ quan thì sẽ phải trả giá" này.
 
-### 1. Khai báo dependency
+## 1. Khai báo dependency
 Chúng ta sẽ sử dụng thư viện ***spring-boot-starter-validation*** để thực hiện xác thực. Đây là cách khai báo sử dụng thư viện trong Maven:
 
 ```
@@ -14,7 +14,7 @@ Chúng ta sẽ sử dụng thư viện ***spring-boot-starter-validation*** đ�
 
 *Note: Một số nguồn nói rằng spring-boot-starter-validation đã có sẵn trong dependency spring-boot-starter-web. Tuy nhiên điều này không còn đúng từ Spring Boot 2.3 và trở đi: lập trình viên sẽ phải tự khai báo thư viện validation của Spring như trên.*
 
-### 2. Mô tả ví dụ
+## 2. Mô tả ví dụ
 Chúng ta sẽ thử xác thực một request tạo người (PersonRequest). Trong request để tạo Person sẽ có các thuộc tính sau: tên (name), tuổi (age), chiều cao (height), danh sách các sở thích (hobbies):
 
 ```java
@@ -46,11 +46,11 @@ public class PersonController {
 
 @Valid và BindingResult sẽ được giải thích ở bên dưới.
 
-### 3. Các annotation thông dụng trong việc xác thực dữ liệu.
+## 3. Các annotation thông dụng trong việc xác thực dữ liệu.
 
 Spring Validation cung cấp cho chúng ta hàng loạt các annotation (chú thích) trong package **javax.validation.constraints** để hỗ trợ việc xác thực dữ liệu. Hãy cùng nhau điểm qua một vài gương mặt tiêu biểu:
 
-#### @NotNull, @NotEmpty và @NotBlank
+### @NotNull, @NotEmpty và @NotBlank
 Như tên gọi của nó, annotation **@NotNull** kiểm tra xem liệu thuộc tính có null hay không.
 
 Khi chúng ta thêm @NotNull vào thuộc tính tên (name) như sau:
@@ -74,7 +74,7 @@ Vì vậy, ngoài @NotNull, chúng ta còn có **@NotEmpty và @NotBlank**. Khi 
 
 @NotBlank: có thể dùng được cho String. Annotation này từ chối String có giá trị null và **String có độ dài là 0 sau khi đã trim** *(loại bỏ hết khoảng trắng thừa ở đầu và cuối của String)*
 
-#### @Min, @Max
+### @Min, @Max
 Hai annotation trên được sử dụng để kiểm trị số được truyền vào có lớn hơn mức tối thiểu(**@Min**) và có lớn hơn mức tối đa (**@Max**) không.
 
 Khi chúng ta chú thích cho tuổi (age) như sau:
@@ -91,7 +91,7 @@ Fun fact 1: *@Min(0) là viết tắt của @Min(value= 0)*
 
 Fun fact 2: **@Min, @Max ngoài sử dụng cho int, long, short, byte còn có thể sử dụng được cho String!** (miễn là String có thể được parse thành số, nếu không validate sẽ fail). **Hơn nữa, khi sử dụng cho String thì @Min @Max sẽ dùng được cho cả số thập phân, hoặc bạn có thể xem @DecimalMin/ @DecimalMax phần tiếp theo:**
 
-#### @Digits, @DecimalMin, @DecimalMax
+### @Digits, @DecimalMin, @DecimalMax
 
 Ba annotation này được thiết kế *để sử dụng với số thập phân (Double, FLoat, BigDecimal)*. 
 
@@ -116,7 +116,7 @@ private Double height;
 ```
 Thì 300.5 sẽ là một giá trị hợp lệ vì inclusive dược đặt là true, tuy nhiên **0 sẽ là một giá trị không hợp lệ** vì inclusive là false.
 
-#### @Pattern
+### @Pattern
 Annotation này được sử dụng để so sánh liệu CharSequence có khớp với một regular expression (regexp). Lưu ý @Pattern sẽ chỉ coi CharSequence là hợp lệ khi **toàn bộ CharSequence khớp với regular expression. Nếu chỉ một ký tự không match với regular expression thì sẽ bị coi là không hợp lệ**. Nếu không chắc, hãy sử dụng [regex101](https://regex101.com/) và chọn Flavor là Java 8 để kiểm tra regexp của bạn với bất kì dữ liệu đầu vào.
 
 Khi chúng ta chú thích cho tên (name) như sau:
@@ -127,7 +127,7 @@ private String name;
 ```
 Thì tất cả các tên được truyền vào buộc phải có ký tự đầu tiên là chữ cái ASCII, và các kí tự sau đó phải là kí chữ cái hoặc dấu cách. Nếu như String chứa số hoặc các kí tự đặc biệt (% & * # @ ! ...) thì sẽ không xác thực thành công. *Note: regexp trên sẽ không dùng được cho chữ cái của các ngôn ngữ khác, trong đó có tiếng Việt.*
 
-#### @Length
+### @Length
 Để ép độ dài cho String thì ta có thể dùng annotation **@Length** thuộc package **org.hibernate.validator.constraints** và chỉ định giá trị min và/hoặc max. (vẫn tương thích với ví dụ bên trên):
 
 ```java
@@ -135,7 +135,7 @@ Thì tất cả các tên được truyền vào buộc phải có ký tự đ�
 private String name;
 ```
 
-#### @Size
+### @Size
 Tương tự, để ép kích thước cho một tập hợp thì có thể dùng **@Size**:
 
 ```java
@@ -143,7 +143,7 @@ Tương tự, để ép kích thước cho một tập hợp thì có thể dùn
 private List<String> hobbies;
 ```
 
-#### @Valid
+### @Valid
 Trong controller, chúng ta chú thích **@Valid cho đối số cần được xác thực dữ liệu**, ví dụ:
 
 ```java
@@ -151,7 +151,7 @@ Trong controller, chúng ta chú thích **@Valid cho đối số cần được 
 public String createPerson(@RequestBody @Valid PersonRequest request)
 ```
 
-### 4. Xử lý lỗi xác thực bằng BindingResult
+## 4. Xử lý lỗi xác thực bằng BindingResult
 
 BindingResult là nơi Spring chứa kết quả của việc xác thực dữ liệu. Với ví dụ của chúng ta, nếu như có lỗi trong quá trình xác thực đầu vào thì chúng ta có thể kiểm tra bằng **BindingResult.hasErrors()**:
 
@@ -224,7 +224,7 @@ Thì kết quả báo lỗi sẽ thay đổi tương ứng:
 ![image](https://user-images.githubusercontent.com/94212764/143779834-223c4326-90ef-45c4-ab64-62ad47764506.png)
 
 
-### 5. Custom Validator
+## 5. Custom Validator
 
 Để tự định nghĩa một quy trình xác thực dữ liệu riêng, đầu tiên ta cần phải tạo một annotation dạng Constraint. Ví dụ ở đây mình sẽ làm một constraint (ràng buộc) là chữ cái đầu tiên của một String phải được in hoa:
 
@@ -269,11 +269,11 @@ private String name;
 ![image](https://user-images.githubusercontent.com/94212764/143780434-99c52c93-6539-496e-9e02-ef10adf66397.png)
 
 
-### 6. Xác thực ở Entity?
+## 6. Xác thực ở Entity?
 
 Thực tế, các annotation được giới thiệu ở mục 3 có thể dùng cho Entity class (phục vụ cho việc lưu vào database *(persistence)*). Tuy nhiên, theo ý kiến cá nhân của mình thì nên validate dữ liệu ngay từ request vì đến Entity mới validate đồng nghĩa vời việc các hàm ở service layer có thể đã phải làm việc với một object méo mó, sai định dạng mà chúng ta mong đợi. Còn các bạn nhận định sao về vấn đề này? Hãy comment bên dưới để chia sẻ với mọi người!
 
-### 7. Tham khảo thêm
+## 7. Tham khảo thêm
 
 [Code các bạn có thể xem tại đây](https://github.com/NguyenDuyThaiSon-OneMount/learnvalidation)
 
